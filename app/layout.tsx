@@ -28,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${fraunces.variable} ${workSans.variable} font-body`}>
+      <body className= {`${fraunces.variable} ${workSans.variable} font-body bg-gradient-to-br from-red-50 via-white to-orange-50`}>
         {children}
       </body>
     </html>

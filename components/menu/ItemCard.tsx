@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { MenuItem } from "./types";
 
@@ -5,11 +8,12 @@ type Props = {
   item: MenuItem;
   quantity: number;
   onQuantityChange: (quantity: number) => void;
+  index?: number;
 };
 
-export default function ItemCard({ item, quantity, onQuantityChange }: Props) {
+export default function ItemCard({ item, quantity, onQuantityChange, index = 0 }: Props) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-3xl bg-gradient-to-b from-neutral-800 to-neutral-950 p-3 shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
+    <div className="flex flex-col overflow-hidden rounded-3xl bg-gradient-to-b from-red-800 to-neutral-950 p-3 shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
       {/* Image */}
       <div className="relative aspect-[8/5] w-full overflow-hidden rounded-2xl bg-neutral-800">
         <Image
@@ -35,7 +39,12 @@ export default function ItemCard({ item, quantity, onQuantityChange }: Props) {
 
         {/* Floating add / quantity control */}
         {quantity > 0 ? (
-          <div className="absolute bottom-2 right-2 flex items-center gap-2 rounded-full bg-neutral-900/90 px-2 py-1 backdrop-blur">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2 }}
+            className="absolute bottom-2 right-2 flex items-center gap-2 rounded-full bg-neutral-900/90 px-2 py-1 backdrop-blur"
+          >
             <button
               aria-label="Decrease quantity"
               onClick={() => onQuantityChange(Math.max(0, quantity - 1))}
@@ -53,15 +62,16 @@ export default function ItemCard({ item, quantity, onQuantityChange }: Props) {
             >
               +
             </button>
-          </div>
+          </motion.div>
         ) : (
-          <button
+          <motion.button
+            whileTap={{ scale: 0.85 }}
             aria-label="Add item"
             onClick={() => onQuantityChange(1)}
             className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900/90 text-lg font-bold text-white backdrop-blur"
           >
             +
-          </button>
+          </motion.button>
         )}
       </div>
 

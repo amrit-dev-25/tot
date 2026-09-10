@@ -35,7 +35,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="bg-white px-4 py-6 md:px-4 md:py-6">
+    <section className="px-4 py-6 md:px-4 md:py-6">
       <div className="mx-auto max-w-8xl">
         {/* Poster carousel — each slide is a complete creative, no text overlay */}
         <div className="relative aspect-[21/9] w-full overflow-hidden rounded-3xl shadow-lg md:aspect-[21/9]">
