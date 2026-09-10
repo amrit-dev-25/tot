@@ -6,14 +6,17 @@ import Image from "next/image";
 const slides = [
   {
     image: "/1-hero.png",
+    mobileImage: "/m-1-hero.png",
     alt: "Wednesday deal — buy 1 get 1 free burger promotion",
   },
   {
     image: "/2-hero.png",
+    mobileImage: "/m-2-hero.png",
     alt: "New loaded double cheeseburger launch",
   },
   {
     image: "/3-hero.png",
+    mobileImage: "/m-3-hero.png",
     alt: "Weekend combo offer — burger, fries and drink",
   },
 ];
@@ -38,7 +41,7 @@ export default function Hero() {
     <section className="px-4 py-6 md:px-4 md:py-6">
       <div className="mx-auto max-w-8xl">
         {/* Poster carousel — each slide is a complete creative, no text overlay */}
-        <div className="relative aspect-[21/9] w-full overflow-hidden rounded-3xl shadow-lg md:aspect-[21/9]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-lg md:aspect-[21/9]">
           {slides.map((slide, i) => (
             <div
               key={slide.image}
@@ -47,13 +50,23 @@ export default function Hero() {
               }`}
               aria-hidden={i !== active}
             >
+              {/* Mobile crop — shown below md */}
+              <Image
+                src={slide.mobileImage}
+                alt={slide.alt}
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                className="object-cover md:hidden"
+              />
+              {/* Desktop/wide crop — shown at md and up */}
               <Image
                 src={slide.image}
                 alt={slide.alt}
                 fill
                 priority={i === 0}
                 sizes="100vw"
-                className="object-cover"
+                className="hidden object-cover md:block"
               />
             </div>
           ))}
