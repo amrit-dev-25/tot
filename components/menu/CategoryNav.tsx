@@ -33,19 +33,20 @@ export default function CategoryNav({
 
   return (
     <div className="flex flex-col gap-5 py-4">
-      <div className="flex gap-3">
+      <div className="flex gap-2 sm:gap-3">
         <button
           aria-label="Scroll categories left"
           onClick={() => scrollByAmount(-240)}
-          className="flex h-10 w-10 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
+          className="flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
         >
-          <ChevronLeft size={16} />
+          <ChevronLeft size={14} className="sm:hidden" />
+          <ChevronLeft size={16} className="hidden sm:block" />
         </button>
 
         <div className="relative min-w-0 flex-1">
           <div
             ref={trackRef}
-            className="flex items-start gap-10 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex items-start gap-5 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-10"
           >
             {categories.map((category, index) => {
               const active = category.id === activeCategoryId;
@@ -58,13 +59,13 @@ export default function CategoryNav({
                   viewport={{ once: true, amount: 0.5 }}
                   transition={{
                     duration: 0.35,
-                    delay: index * 0.08,
+                    delay: index * 0.05,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                   whileTap={{ scale: 0.94 }}
-                  className="flex shrink-0 flex-col items-center gap-2 pt-2"
+                  className="flex shrink-0 flex-col items-center gap-1.5 pt-2 sm:gap-2"
                 >
-                  <div className="relative h-20 w-20">
+                  <div className="relative h-14 w-14 sm:h-20 sm:w-20">
                     <Image
                       src={category.image}
                       alt=""
@@ -74,7 +75,7 @@ export default function CategoryNav({
                     />
                   </div>
                   <span
-                    className={`inline-block whitespace-nowrap border-b-2 pb-3 text-sm font-semibold transition-colors ${
+                    className={`inline-block whitespace-nowrap border-b-2 pb-2 text-xs font-semibold transition-colors sm:pb-3 sm:text-sm ${
                       active
                         ? "border-orange-500 text-neutral-900"
                         : "border-transparent text-neutral-500"
@@ -86,21 +87,21 @@ export default function CategoryNav({
               );
             })}
           </div>
-
           <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-0.5 bg-neutral-300" />
         </div>
 
         <button
           aria-label="Scroll categories right"
           onClick={() => scrollByAmount(240)}
-          className="flex h-10 w-10 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
+          className="flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
         >
-          <ChevronRight size={16} />
+          <ChevronRight size={14} className="sm:hidden" />
+          <ChevronRight size={16} className="hidden sm:block" />
         </button>
       </div>
 
-      {/* Veg / non-veg filters — independent toggles, not a radio choice */}
-      <div className="flex items-center gap-3 pl-[52px]">
+      {/* Veg / non-veg filters */}
+      <div className="flex items-center gap-3 pl-2 sm:pl-[52px]">
         <VegToggle active={vegOnly} onClick={onToggleVeg} variant="veg" />
         <VegToggle
           active={nonVegOnly}
