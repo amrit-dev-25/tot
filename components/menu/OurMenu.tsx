@@ -11,19 +11,17 @@ import CartPanel from "./CartPanel";
 const NAVBAR_OFFSET = "72px";
 const headingWords = "See What's Cookin'".split(" ");
 
+type FoodFilter = "all" | "veg" | "non-veg";
+
 export default function OurMenu() {
   const [activeCategoryId, setActiveCategoryId] = useState(
     menuCategories[0].id,
   );
-  const [vegOnly, setVegOnly] = useState(false);
-  const [nonVegOnly, setNonVegOnly] = useState(false);
+  const [foodFilter, setFoodFilter] = useState<FoodFilter>("all");
   const [cart, setCart] = useState<Record<string, number>>({});
   const [mobileCartOpen, setMobileCartOpen] = useState(false);
 
-  const allItems = useMemo(
-    () => menuCategories.flatMap((c) => c.items),
-    [],
-  );
+  const allItems = useMemo(() => menuCategories.flatMap((c) => c.items), []);
 
   const cartCount = useMemo(
     () => Object.values(cart).reduce((sum, qty) => sum + qty, 0),
@@ -36,11 +34,11 @@ export default function OurMenu() {
 
   const visibleItems = useMemo(() => {
     return activeCategory.items.filter((item) => {
-      if (vegOnly && !nonVegOnly) return item.isVeg;
-      if (nonVegOnly && !vegOnly) return !item.isVeg;
+      if (foodFilter === "veg") return item.isVeg;
+      if (foodFilter === "non-veg") return !item.isVeg;
       return true;
     });
-  }, [activeCategory, vegOnly, nonVegOnly]);
+  }, [activeCategory, foodFilter]);
 
   const setQty = (itemId: string, qty: number) => {
     setCart((prev) => {
@@ -83,7 +81,11 @@ export default function OurMenu() {
           >
             <motion.span
               animate={{ opacity: [1, 0.3, 1] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 1.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
               ·
             </motion.span>{" "}
@@ -113,7 +115,10 @@ export default function OurMenu() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.25 + headingWords.length * 0.12 + 0.2 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.25 + headingWords.length * 0.12 + 0.2,
+            }}
             className="mt-2 px-4 text-xs text-neutral-500 sm:mt-3 sm:px-0 sm:text-sm"
           >
             *Our menu changes based on seasonality and availability
@@ -122,15 +127,16 @@ export default function OurMenu() {
 
         <div className="flex gap-8">
           <div className="min-w-0 flex-1">
-            <div className="sticky z-30 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ top: NAVBAR_OFFSET }}>
+            <div
+              className="sticky z-30 -mx-4 px-4 sm:mx-0 sm:px-0"
+              style={{ top: NAVBAR_OFFSET }}
+            >
               <CategoryNav
                 categories={menuCategories}
                 activeCategoryId={activeCategoryId}
                 onSelect={setActiveCategoryId}
-                vegOnly={vegOnly}
-                nonVegOnly={nonVegOnly}
-                onToggleVeg={() => setVegOnly((v) => !v)}
-                onToggleNonVeg={() => setNonVegOnly((v) => !v)}
+                foodFilter={foodFilter}
+                onFoodFilterChange={setFoodFilter}
               />
             </div>
 
@@ -178,7 +184,11 @@ export default function OurMenu() {
                 className="hidden w-[320px] shrink-0 lg:block"
               >
                 <div className="sticky" style={{ top: NAVBAR_OFFSET }}>
-                  <CartPanel items={allItems} cart={cart} onQuantityChange={setQty} />
+                  <CartPanel
+                    items={allItems}
+                    cart={cart}
+                    onQuantityChange={setQty}
+                  />
                 </div>
               </motion.div>
             )}
@@ -228,7 +238,9 @@ export default function OurMenu() {
               className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-4 lg:hidden"
             >
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-base font-bold text-neutral-900">Your cart</span>
+                <span className="text-base font-bold text-neutral-900">
+                  Your cart
+                </span>
                 <button
                   aria-label="Close cart"
                   onClick={() => setMobileCartOpen(false)}
@@ -237,7 +249,11 @@ export default function OurMenu() {
                   <X size={16} />
                 </button>
               </div>
-              <CartPanel items={allItems} cart={cart} onQuantityChange={handleQtyChange} />
+              <CartPanel
+                items={allItems}
+                cart={cart}
+                onQuantityChange={handleQtyChange}
+              />
             </motion.div>
           </>
         )}

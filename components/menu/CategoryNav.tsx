@@ -6,24 +6,22 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Circle, Triangle } from "lucide-react";
 import { MenuCategory } from "./types";
 
+type FoodFilter = "all" | "veg" | "non-veg";
+
 type Props = {
   categories: MenuCategory[];
   activeCategoryId: string;
   onSelect: (id: string) => void;
-  vegOnly: boolean;
-  nonVegOnly: boolean;
-  onToggleVeg: () => void;
-  onToggleNonVeg: () => void;
+  foodFilter: FoodFilter;
+  onFoodFilterChange: (value: FoodFilter) => void;
 };
 
 export default function CategoryNav({
   categories,
   activeCategoryId,
   onSelect,
-  vegOnly,
-  nonVegOnly,
-  onToggleVeg,
-  onToggleNonVeg,
+  foodFilter,
+  onFoodFilterChange,
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -39,8 +37,7 @@ export default function CategoryNav({
           onClick={() => scrollByAmount(-240)}
           className="flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
         >
-          <ChevronLeft size={14} className="sm:hidden" />
-          <ChevronLeft size={16} className="hidden sm:block" />
+          <ChevronLeft size={16} />
         </button>
 
         <div className="relative min-w-0 flex-1">
@@ -95,55 +92,108 @@ export default function CategoryNav({
           onClick={() => scrollByAmount(240)}
           className="flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
         >
-          <ChevronRight size={14} className="sm:hidden" />
-          <ChevronRight size={16} className="hidden sm:block" />
+          <ChevronRight size={16} />
         </button>
       </div>
 
-      {/* Veg / non-veg filters */}
-      <div className="flex items-center gap-3 pl-2 sm:pl-[52px]">
-        <VegToggle active={vegOnly} onClick={onToggleVeg} variant="veg" />
-        <VegToggle
-          active={nonVegOnly}
-          onClick={onToggleNonVeg}
-          variant="non-veg"
-        />
+      {/* Single 3-state veg / all / non-veg slider */}
+      <div className="pl-2 sm:pl-[52px]">
+        <FoodFilterToggle value={foodFilter} onChange={onFoodFilterChange} />
       </div>
     </div>
   );
 }
 
-function VegToggle({
-  active,
-  onClick,
-  variant,
+function FoodFilterToggle({
+  value,
+  onChange,
 }: {
-  active: boolean;
-  onClick: () => void;
-  variant: "veg" | "non-veg";
+  value: FoodFilter;
+  onChange: (value: FoodFilter) => void;
 }) {
-  const borderColor = variant === "veg" ? "border-green-600" : "border-red-700";
-  const iconColor = variant === "veg" ? "text-green-600" : "text-red-700";
-  const Icon = variant === "veg" ? Circle : Triangle;
+  const positions: Record<FoodFilter, number> = { veg: 3, all: 41, "non-veg": 79 };
+
+  const knobColor =
+    value === "veg" ? "bg-green-600" : value === "non-veg" ? "bg-red-700" : "bg-white";
+
+  const trackColor =
+    value === "veg"
+      ? "bg-green-100"
+      : value === "non-veg"
+        ? "bg-red-100"
+        : "bg-neutral-200";
 
   return (
-    <button
-      onClick={onClick}
-      aria-pressed={active}
-      aria-label={
-        variant === "veg"
-          ? "Show vegetarian items only"
-          : "Show non-vegetarian items only"
-      }
-      className={`relative flex h-8 w-16 shrink-0 items-center rounded-full border-2 bg-white/40 backdrop-blur-md transition-colors ${borderColor}`}
-    >
-      <motion.span
-        animate={{ x: active ? 34 : 4 }}
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        className="absolute flex h-6 w-6 items-center justify-center rounded-full bg-white"
+    <div className="flex items-center gap-2.5">
+      <span
+        className={`text-md font-semibold transition-colors ${
+          value === "veg" ? "text-green-600" : "text-neutral-400"
+        }`}
       >
-        <Icon size={14} className={iconColor} fill="currentColor" />
-      </motion.span>
-    </button>
+        VEG
+      </span>
+
+      <div
+        className={`relative h-9 w-[112px] shrink-0 rounded-full p-0.5 shadow-inner transition-colors duration-300 ${trackColor}`}
+      >
+        <motion.span
+          animate={{ x: positions[value] }}
+          transition={{ type: "spring", stiffness: 500, damping: 32 }}
+          className={`absolute top-1 h-7 w-7 rounded-full shadow-md transition-colors duration-300 ${knobColor}`}
+        />
+
+        <button
+          type="button"
+          aria-label="Show vegetarian items only"
+          aria-pressed={value === "veg"}
+          onClick={() => onChange(value === "veg" ? "all" : "veg")}
+          className="absolute top-0 z-10 flex h-9 w-9 items-center justify-center"
+        >
+          <Circle
+            size={13}
+            className={value === "veg" ? "text-white" : "text-green-600"}
+            fill="currentColor"
+          />
+        </button>
+
+        <button
+          type="button"
+          aria-label="Show all items"
+          aria-pressed={value === "all"}
+          onClick={() => onChange("all")}
+          className="absolute top-0 z-10 flex h-9 w-9 items-center justify-center"
+          style={{ left: 38 }}
+        >
+          <span
+            className={`h-1.5 w-1.5 rounded-full transition-colors ${
+              value === "all" ? "bg-white" : "bg-neutral-400"
+            }`}
+          />
+        </button>
+
+        <button
+          type="button"
+          aria-label="Show non-vegetarian items only"
+          aria-pressed={value === "non-veg"}
+          onClick={() => onChange(value === "non-veg" ? "all" : "non-veg")}
+          className="absolute top-0 z-10 flex h-9 w-9 items-center justify-center"
+          style={{ left: 76 }}
+        >
+          <Triangle
+            size={13}
+            className={value === "non-veg" ? "text-white" : "text-red-700"}
+            fill="currentColor"
+          />
+        </button>
+      </div>
+
+      <span
+        className={`text-md font-semibold transition-colors ${
+          value === "non-veg" ? "text-red-700" : "text-neutral-400"
+        }`}
+      >
+        NON-VEG
+      </span>
+    </div>
   );
 }

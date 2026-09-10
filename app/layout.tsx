@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Work_Sans } from "next/font/google";
 import "./globals.css";
+import Preloader from "@/components/Preloader";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className= {`${fraunces.variable} ${workSans.variable} font-body bg-gradient-to-br from-red-50 via-white to-orange-50`}>
+        <Preloader />
         {children}
       </body>
     </html>
