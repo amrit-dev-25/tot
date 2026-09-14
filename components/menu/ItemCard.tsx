@@ -37,8 +37,8 @@ export default function ItemCard({ item, quantity, onQuantityChange, index = 0 }
           )}
         </span>
 
-        {/* Floating add / quantity control */}
-        {quantity > 0 ? (
+        {/* Floating add / quantity control — moved below, commented out here */}
+        {/* {quantity > 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -72,13 +72,12 @@ export default function ItemCard({ item, quantity, onQuantityChange, index = 0 }
           >
             +
           </motion.button>
-        )}
+        )} */}
       </div>
 
       {/* Content */}
       <div className="flex flex-col items-center px-2 pb-2 pt-3 text-center">
         <h3 className="text-base font-bold text-white">{item.name}</h3>
-        <p className="mt-1 text-sm font-bold text-white">${item.price}</p>
 
         {item.description && (
           <p className="mt-1 line-clamp-2 text-xs text-neutral-400">
@@ -86,6 +85,50 @@ export default function ItemCard({ item, quantity, onQuantityChange, index = 0 }
           </p>
         )}
 
+        {/* Price (left) + Add to cart (right) */}
+        <div className="mt-3 flex w-full items-center justify-between gap-2">
+          <p className="shrink-0 rounded-full bg-white px-2 py-1 text-xs font-bold text-black">
+            ${item.price}
+          </p>
+
+          {quantity > 0 ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2 }}
+              className="flex shrink-0 items-center gap-1 rounded-full bg-white px-1.5 py-1"
+            >
+              <button
+                aria-label="Decrease quantity"
+                onClick={() => onQuantityChange(Math.max(0, quantity - 1))}
+                className="flex h-4 w-4 items-center justify-center text-xs font-bold text-black"
+              >
+                −
+              </button>
+              <span className="w-3 text-center text-xs font-semibold text-black">
+                {quantity}
+              </span>
+              <button
+                aria-label="Increase quantity"
+                onClick={() => onQuantityChange(quantity + 1)}
+                className="flex h-4 w-4 items-center justify-center text-xs font-bold text-black"
+              >
+                +
+              </button>
+            </motion.div>
+          ) : (
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              aria-label="Add item"
+              onClick={() => onQuantityChange(1)}
+              className="shrink-0 rounded-full bg-white px-2 py-1 text-xs font-bold text-black"
+            >
+              Add
+            </motion.button>
+          )}
+        </div>
+
+        {/* Macros — commented out for now
         {item.macros && (
           <div className="mt-3 flex w-full gap-2">
             <MacroBadge value={item.macros.cals} label="Cals" />
@@ -93,6 +136,7 @@ export default function ItemCard({ item, quantity, onQuantityChange, index = 0 }
             <MacroBadge value={item.macros.protein} label="Protein" />
           </div>
         )}
+        */}
       </div>
     </div>
   );

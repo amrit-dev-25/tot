@@ -35,7 +35,7 @@ export default function CategoryNav({
         <button
           aria-label="Scroll categories left"
           onClick={() => scrollByAmount(-240)}
-          className="flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
+          className="hidden md:flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
         >
           <ChevronLeft size={16} />
         </button>
@@ -90,7 +90,7 @@ export default function CategoryNav({
         <button
           aria-label="Scroll categories right"
           onClick={() => scrollByAmount(240)}
-          className="flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
+          className=" hidden md:flex h-8 w-8 shrink-0 self-center items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 sm:h-10 sm:w-10"
         >
           <ChevronRight size={16} />
         </button>

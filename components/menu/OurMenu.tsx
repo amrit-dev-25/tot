@@ -8,7 +8,7 @@ import CategoryNav from "./CategoryNav";
 import ItemCard from "./ItemCard";
 import CartPanel from "./CartPanel";
 
-const NAVBAR_OFFSET = "72px";
+// const NAVBAR_OFFSET = "72px";
 const headingWords = "See What's Cookin'".split(" ");
 
 type FoodFilter = "all" | "veg" | "non-veg";
@@ -59,7 +59,7 @@ export default function OurMenu() {
   };
 
   return (
-    <section className="relative overflow-hidden px-4 py-8 sm:px-6 sm:py-10 md:px-10">
+    <section className="relative overflow-hidden px-4  md:py-8 sm:px-6 sm:py-10 md:px-10">
       <div className="pointer-events-none absolute -left-40 top-25 h-30 w-[220px] rounded-full bg-red-400/50 blur-3xl sm:w-140" />
       <div className="pointer-events-none absolute -right-16 top-1/3 h-52 w-52 rounded-full bg-amber-200/40 blur-3xl sm:h-72 sm:w-72" />
 
@@ -70,7 +70,7 @@ export default function OurMenu() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{ perspective: 800 }}
-          className="relative px-2 py-8 text-center sm:px-6 sm:py-14"
+          className="relative  px-2 py- text-center sm:px-6 sm:py-14"
         >
           <motion.span
             initial={{ opacity: 0, y: -8, scale: 0.9 }}
@@ -92,7 +92,7 @@ export default function OurMenu() {
             Our Menu
           </motion.span>
 
-          <h1 className="mt-3 flex flex-wrap justify-center gap-x-2 text-3xl font-extrabold text-neutral-900 sm:mt-4 sm:gap-x-4 sm:text-4xl md:text-6xl">
+          <h1 className="hidden md:flex mt-3 flex-wrap justify-center gap-x-2 text-3xl font-extrabold text-neutral-900 sm:mt-4 sm:gap-x-4 sm:text-4xl md:text-6xl">
             {headingWords.map((word, i) => (
               <motion.span
                 key={i}
@@ -119,7 +119,7 @@ export default function OurMenu() {
               duration: 0.5,
               delay: 0.25 + headingWords.length * 0.12 + 0.2,
             }}
-            className="mt-2 px-4 text-xs text-neutral-500 sm:mt-3 sm:px-0 sm:text-sm"
+            className="hidden md:block mt-2 px-4 text-xs text-neutral-500 sm:mt-3 sm:px-0 sm:text-sm"
           >
             *Our menu changes based on seasonality and availability
           </motion.p>
@@ -129,7 +129,7 @@ export default function OurMenu() {
           <div className="min-w-0 flex-1">
             <div
               className="sticky z-30 -mx-4 px-4 sm:mx-0 sm:px-0"
-              style={{ top: NAVBAR_OFFSET }}
+              // style={{ top: NAVBAR_OFFSET }}
             >
               <CategoryNav
                 categories={menuCategories}
@@ -183,7 +183,9 @@ export default function OurMenu() {
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="hidden w-[320px] shrink-0 lg:block"
               >
-                <div className="sticky" style={{ top: NAVBAR_OFFSET }}>
+                <div className="sticky" 
+                // style={{ top: NAVBAR_OFFSET }}
+                >
                   <CartPanel
                     items={allItems}
                     cart={cart}

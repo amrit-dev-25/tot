@@ -63,8 +63,8 @@ export const menuCategories: MenuCategory[] = [
     ],
   },
   {
-    id: "signature-range-pizza",
-    label: "Signature Range Pizza",
+    id: "signature-range",
+    label: "Signature Range",
     image: "/22.png",
     items: [
       {
